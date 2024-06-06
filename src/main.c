@@ -29,7 +29,7 @@ int	set_philo(t_table *table, t_philo *philo)
 		philo[i].id = i + 1;
 		philo[i].eating_count = 0;
 		philo[i].last_eat = table->first_time;
-		// philo[i].table = table;
+		philo[i].table = table;
 		i++;
 	}
 	return (1);

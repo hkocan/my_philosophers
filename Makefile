@@ -11,6 +11,7 @@ SRCS	=$(SRCS_PATH)/main.c\
 		$(SRCS_PATH)/philo.c\
 		$(SRCS_PATH)/set_table.c\
 		$(SRCS_PATH)/simulation.c\
+		$(SRCS_PATH)/action.c\
 
 OBJS	= $(SRCS:.c=.o)
 

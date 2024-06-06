@@ -31,7 +31,7 @@ typedef struct s_philo
 	int				eating_count;//
 	time_t			last_eat;//
 	pthread_t		thread;
-	//struct s_table	*table;
+	struct s_table	*table;
 }	t_philo;
 
 typedef struct s_table
@@ -55,4 +55,7 @@ time_t	get_time(void);
 int		check_args(char **av);
 int		start_simulation(t_table *table);
 int		set_table(char **av, t_table *table, t_philo *philo);
+int		eat_spaghetti(t_table *table, t_philo *philo);
+int		print_action(t_table *table, t_philo *philo, char *str);
+
 #endif
