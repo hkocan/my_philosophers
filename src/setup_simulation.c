@@ -1,41 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_table.c                                        :+:      :+:    :+:   */
+/*   setup_simulation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 14:38:15 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/06 23:52:06 by hatice           ###   ########.fr       */
+/*   Updated: 2024/06/09 01:14:09 by hatice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
+#include <stdlib.h>
 
-int	check_args(char **av)
+static int	set_philo(t_table *table)
 {
-	int	i;
-	int	j;
+	int		i;
+	t_philo	*philo;
 
-	i = 1;
-	while (av[i])
+	i = 0;
+	table->philo = malloc(sizeof(t_philo) * table->number_philo);
+	if (!table->philo)
+		return (error_message(MEM_ERROR), 1);
+	philo = table->philo;
+	while (i < table->number_philo)
 	{
-		j = 0;
-		while (av[i][j])
-		{
-			if (av[i][j] < '0' || av[i][j] > '9')
-				return (1);
-			j++;
-		}
+		philo[i].id = i + 1;
+		philo[i].eating_count = 0;
+		philo[i].last_eat = table->first_time;
+		philo[i].table = table;
 		i++;
 	}
 	return (0);
 }
 
-int	init_table(char **av, t_table *table, t_philo *philo)
+static int	init_table(char **av, t_table *table)
 {
-	(table)->first_time = get_time();
-	table->philo = philo;
+	table->first_time = get_time();
 	table->number_philo = ft_atoi(av[1]);
 	table->time_to_die = ft_atoi(av[2]);
 	table->time_to_eat = ft_atoi(av[3]);
@@ -43,46 +44,53 @@ int	init_table(char **av, t_table *table, t_philo *philo)
 	table->dead = false;
 	if (table->number_philo < 1 || table->time_to_die < 0
 		|| table->time_to_eat < 0 || table->time_to_sleep < 0)
-		return (0);
+		return (1);
 	if (av[5])
 	{
 		table->eating_count = ft_atoi(av[5]);
 		if (table->eating_count < 1)
-			return (0);
+			return (1);
 	}
 	else
 		table->eating_count = -1;
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->number_philo);
 	if (!table->forks)
-		return (0);
-	return (1);
+		return (error_message(MEM_ERROR), 1);
+	return (0);
 }
 
-int	init_mutex(t_table *table)
+static int	init_mutex(t_table *table)
 {
 	int	i;
 
 	i = 0;
 	if (pthread_mutex_init(&table->print, NULL))
-		return (0);
+		return (error_message(MUTEX_ERROR), 1);
 	if (pthread_mutex_init(&table->is_anyone_dead, NULL))
-		return (0);
+		return (error_message(MUTEX_ERROR), 1);
 	while (i < table->number_philo)
 	{
 		if (pthread_mutex_init(&table->forks[i], NULL))
-			return (0);
+			return (error_message(MUTEX_ERROR), 1);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
-int	set_table(char **av, t_table *table, t_philo *philo)
+static int	set_table(char **av, t_table *table)
 {
-	if (check_args(av))
-		return (0);
-	init_table(av, table, philo);
-	if (!init_mutex(table))
-		return (0);
-	return (1);
+	if (init_table(av, table))
+		return (1);
+	if (init_mutex(table))
+		return (1);
+	return (0);
 }
-//table and table->forks malloc
+
+int	setup_simulation(t_table *table, char **av)
+{
+	if (set_table(av, table))
+		return (error_message(TABLE_ERROR), 1);
+	else if (set_philo(table))
+		return (error_message(PHILO_ERROR), 1);
+	return (0);
+}

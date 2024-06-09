@@ -6,16 +6,14 @@
 /*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:58:19 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/05 14:38:42 by hatice           ###   ########.fr       */
+/*   Updated: 2024/06/09 01:13:02 by hatice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-
-void	error_message(char *str)
-{
-	printf("%s%s", RED, str);
-}
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/time.h>
 
 time_t	get_time(void)
 {
@@ -23,6 +21,47 @@ time_t	get_time(void)
 
 	gettimeofday(&time, NULL);
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+}
+
+void	wait_sleep(t_table *table, time_t time)
+{
+	time_t	start;
+
+	start = get_time();
+	while (table->dead == false)
+	{
+		if (get_time() - start >= time)
+			break ;
+		else
+			usleep(50);
+	}
+}
+
+void	error_message(char *str)
+{
+	printf("%s%s%s", RED, str, RESET);
+}
+
+int	check_args(int ac, char **av)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	if (!(ac == 5 || ac == 6))
+		return (1);
+	while (av[i])
+	{
+		j = 0;
+		while (av[i][j])
+		{
+			if (av[i][j] < '0' || av[i][j] > '9')
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }
 
 int	ft_atoi(const char *str)
@@ -50,5 +89,3 @@ int	ft_atoi(const char *str)
 	}
 	return (result * sign);
 }
-
-

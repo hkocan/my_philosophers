@@ -1,42 +1,40 @@
 #include <pthread.h>
 #include <stdio.h>
-#include <unistd.h>
 
-#define NUM_THREADS 3
+// Paylaşılan kaynak
+int				counter = 0;
 
-// İş parçacığı fonksiyonu
-void	*thread_function(void *arg)
+// Mutex tanımı
+pthread_mutex_t	counter_mutex;
+
+void	*increment_counter(void *arg)
 {
-	int	id;
-
-	id = *((int *)arg);
-	while (1)
+	for (int i = 0; i < 100000000; ++i)
 	{
-		printf("Thread %d: Starting work.\n", id);
-		sleep(2); // İş parçacığı 2 saniye bekler
-		printf("Thread %d: Finished work.\n", id);
+		// Mutex'i kilitle
+		// pthread_mutex_lock(&counter_mutex);
+		counter++;
+		// Mutex'i aç
+		// pthread_mutex_unlock(&counter_mutex);
 	}
 	return (NULL);
 }
 
 int	main(void)
 {
-	pthread_t	threads[NUM_THREADS];
-	int			thread_ids[NUM_THREADS];
-
-	// İş parçacıklarını oluşturma
-	for (int i = 0; i < NUM_THREADS; i++)
-	{
-		thread_ids[i] = i;
-		pthread_create(&threads[i], NULL, thread_function, &thread_ids[i]);
-	}
-
-		printf("How is the thread race going?\n");
-	// İş parçacıklarının tamamlanmasını bekleme
-	for (int i = 0; i < NUM_THREADS; i++)
-	{
-		pthread_join(threads[i], NULL);
-	}
-	printf("All threads have finished.\n");
+	// Mutex'i başlat
+	pthread_mutex_init(&counter_mutex, NULL);
+	// İş parçacıkları tanımı
+	pthread_t thread1, thread2;
+	// İş parçacıklarını oluştur ve başlat
+	pthread_create(&thread1, NULL, increment_counter, NULL);
+	pthread_create(&thread2, NULL, increment_counter, NULL);
+	// İş parçacıklarının bitmesini bekle
+	pthread_join(thread1, NULL);
+	pthread_join(thread2, NULL);
+	// Sonuç
+	printf("Counter değeri: %d\n", counter);
+	// Mutex'i yok et
+	pthread_mutex_destroy(&counter_mutex);
 	return (0);
 }

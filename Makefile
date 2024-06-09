@@ -6,12 +6,12 @@ SRCS_PATH	=./src
 
 RM		=rm -rf
 
-SRCS	=$(SRCS_PATH)/main.c\
-		$(SRCS_PATH)/utils.c\
-		$(SRCS_PATH)/philo.c\
-		$(SRCS_PATH)/set_table.c\
-		$(SRCS_PATH)/simulation.c\
-		$(SRCS_PATH)/action.c\
+SRCS	=	$(SRCS_PATH)/main.c\
+			$(SRCS_PATH)/free.c\
+			$(SRCS_PATH)/utils.c\
+			$(SRCS_PATH)/action.c\
+			$(SRCS_PATH)/simulation.c\
+			$(SRCS_PATH)/setup_simulation.c\
 
 OBJS	= $(SRCS:.c=.o)
 
@@ -19,12 +19,6 @@ INCLUDE	= -pthread
 FLAGS = -g -fsanitize=thread
 
 HEADER	= ./include/philo.h
-
-# ----- COLORS ----- #
-GREEN  = \033[32;1m
-RED    = \033[31;49;1m
-YELLOW = \033[33;49;1m
-RESET  = \033[0m
 
 all: $(NAME)
 
