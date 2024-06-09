@@ -58,7 +58,7 @@ typedef struct s_philo
 
 typedef struct s_table
 {
-	int				number_philo;
+	int				num_philo;
 	int				eating_count;
 	bool			dead;
 	time_t			time_to_die;
@@ -83,9 +83,9 @@ int		eat_spaghetti(t_table *table, t_philo *philo);
 int		print_action(t_table *table, t_philo *philo, char *str);
 
 // ----- SIMULATION ----- //
+int		check_dead(t_table *table, t_philo *philo);
 int		start_simulation(t_table *table);
 void	*philo_life(void *arg);
-int		check_dead(t_table *table, t_philo *philo);
 
 // ----- FREE ----- //
 void	free_table(t_table *table);

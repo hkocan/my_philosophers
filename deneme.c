@@ -1,6 +1,12 @@
 #include <pthread.h>
 #include <stdio.h>
 
+//last eat time
+//deadlock //eat_spaghetti
+
+
+
+
 // Paylaşılan kaynak
 int				counter = 0;
 

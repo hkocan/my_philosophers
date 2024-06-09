@@ -6,14 +6,14 @@
 /*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:58:19 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/09 01:13:02 by hatice           ###   ########.fr       */
+/*   Updated: 2024/06/09 21:41:58 by hatice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-#include <unistd.h>
 #include <stdio.h>
 #include <sys/time.h>
+#include <unistd.h>
 
 time_t	get_time(void)
 {
@@ -30,11 +30,18 @@ void	wait_sleep(t_table *table, time_t time)
 	start = get_time();
 	while (table->dead == false)
 	{
+		if (start - table->philo->last_eat >= table->time_to_die)
+		{
+			check_dead(table, table->philo);
+			break ;
+		}
 		if (get_time() - start >= time)
 			break ;
 		else
 			usleep(50);
 	}
+	if (table->dead == true)
+		return ;
 }
 
 void	error_message(char *str)

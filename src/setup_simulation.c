@@ -6,7 +6,7 @@
 /*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 14:38:15 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/09 01:14:09 by hatice           ###   ########.fr       */
+/*   Updated: 2024/06/09 20:59:28 by hatice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ static int	set_philo(t_table *table)
 	t_philo	*philo;
 
 	i = 0;
-	table->philo = malloc(sizeof(t_philo) * table->number_philo);
+	table->philo = malloc(sizeof(t_philo) * table->num_philo);
 	if (!table->philo)
 		return (error_message(MEM_ERROR), 1);
 	philo = table->philo;
-	while (i < table->number_philo)
+	while (i < table->num_philo)
 	{
 		philo[i].id = i + 1;
 		philo[i].eating_count = 0;
@@ -37,12 +37,12 @@ static int	set_philo(t_table *table)
 static int	init_table(char **av, t_table *table)
 {
 	table->first_time = get_time();
-	table->number_philo = ft_atoi(av[1]);
+	table->num_philo = ft_atoi(av[1]);
 	table->time_to_die = ft_atoi(av[2]);
 	table->time_to_eat = ft_atoi(av[3]);
 	table->time_to_sleep = ft_atoi(av[4]);
 	table->dead = false;
-	if (table->number_philo < 1 || table->time_to_die < 0
+	if (table->num_philo < 1 || table->time_to_die < 0
 		|| table->time_to_eat < 0 || table->time_to_sleep < 0)
 		return (1);
 	if (av[5])
@@ -53,7 +53,7 @@ static int	init_table(char **av, t_table *table)
 	}
 	else
 		table->eating_count = -1;
-	table->forks = malloc(sizeof(pthread_mutex_t) * table->number_philo);
+	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_philo);
 	if (!table->forks)
 		return (error_message(MEM_ERROR), 1);
 	return (0);
@@ -68,7 +68,7 @@ static int	init_mutex(t_table *table)
 		return (error_message(MUTEX_ERROR), 1);
 	if (pthread_mutex_init(&table->is_anyone_dead, NULL))
 		return (error_message(MUTEX_ERROR), 1);
-	while (i < table->number_philo)
+	while (i < table->num_philo)
 	{
 		if (pthread_mutex_init(&table->forks[i], NULL))
 			return (error_message(MUTEX_ERROR), 1);

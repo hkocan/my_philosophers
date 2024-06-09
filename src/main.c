@@ -28,7 +28,6 @@ int	main(int ac, char **av)
 	else if (setup_simulation(table, av))
 		return (free_table(table), 1);
 	else if (start_simulation(table))
-		return (free_table(table), error_message(SIMULATION_ERROR), 1);
-	free_table(table);
+		return (error_message(SIMULATION_ERROR), 1);
 	return (0);
 }
