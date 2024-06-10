@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 23:20:35 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/09 21:33:07 by hatice           ###   ########.fr       */
+/*   Updated: 2024/06/10 16:35:12 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 #include <stdio.h>
 #include <unistd.h>
 
 int	check_dead(t_table *table, t_philo *philo)
 {
-	if (table->dead == true)
+
+	if (control_dead(table)==true)
 		return (0);
 	if (table->eating_count != -1 && philo->eating_count >= table->eating_count)
 		return (0);
@@ -43,7 +44,7 @@ void	*philo_life(void *arg)
 		wait_sleep(table, table->time_to_eat / 2);
 	while (check_dead(table, philo))
 	{
-		if (table->dead == true)
+		if (control_dead(table) == true)
 			break ;
 		if (table->num_philo == 1)
 		{

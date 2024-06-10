@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   setup_simulation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 14:38:15 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/09 20:59:28 by hatice           ###   ########.fr       */
+/*   Updated: 2024/06/10 15:17:34 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 #include <stdlib.h>
 
 static int	set_philo(t_table *table)
@@ -23,6 +23,8 @@ static int	set_philo(t_table *table)
 	if (!table->philo)
 		return (error_message(MEM_ERROR), 1);
 	philo = table->philo;
+	if(pthread_mutex_init(&philo->last_eat_mutex, NULL))
+		return (error_message(MUTEX_ERROR), 1);
 	while (i < table->num_philo)
 	{
 		philo[i].id = i + 1;
@@ -53,9 +55,7 @@ static int	init_table(char **av, t_table *table)
 	}
 	else
 		table->eating_count = -1;
-	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_philo);
-	if (!table->forks)
-		return (error_message(MEM_ERROR), 1);
+
 	return (0);
 }
 
@@ -64,33 +64,30 @@ static int	init_mutex(t_table *table)
 	int	i;
 
 	i = 0;
-	if (pthread_mutex_init(&table->print, NULL))
-		return (error_message(MUTEX_ERROR), 1);
-	if (pthread_mutex_init(&table->is_anyone_dead, NULL))
-		return (error_message(MUTEX_ERROR), 1);
+
+	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_philo);
+	if (!table->forks)
+		return (error_message(MEM_ERROR), 1);
 	while (i < table->num_philo)
 	{
 		if (pthread_mutex_init(&table->forks[i], NULL))
 			return (error_message(MUTEX_ERROR), 1);
 		i++;
 	}
-	return (0);
-}
-
-static int	set_table(char **av, t_table *table)
-{
-	if (init_table(av, table))
-		return (1);
-	if (init_mutex(table))
-		return (1);
+	if (pthread_mutex_init(&table->print, NULL))
+		return (error_message(MUTEX_ERROR), 1);
+	if (pthread_mutex_init(&table->is_anyone_dead, NULL))
+		return (error_message(MUTEX_ERROR), 1);
 	return (0);
 }
 
 int	setup_simulation(t_table *table, char **av)
 {
-	if (set_table(av, table))
-		return (error_message(TABLE_ERROR), 1);
-	else if (set_philo(table))
+	if (init_table(av, table))
+		return (1);
+	if (init_mutex(table))
+		return (1);
+	if (set_philo(table))
 		return (error_message(PHILO_ERROR), 1);
 	return (0);
 }

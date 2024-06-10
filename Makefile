@@ -1,7 +1,7 @@
 NAME		= philo
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -I ./include
+CFLAGS		= -Wall -Wextra -Werror -g -I ./include -fsanitize=thread
 SRCS_PATH	=./src
 
 RM		=rm -rf
@@ -10,20 +10,18 @@ SRCS	=	$(SRCS_PATH)/main.c\
 			$(SRCS_PATH)/free.c\
 			$(SRCS_PATH)/utils.c\
 			$(SRCS_PATH)/action.c\
+			$(SRCS_PATH)/control.c\
 			$(SRCS_PATH)/simulation.c\
 			$(SRCS_PATH)/setup_simulation.c\
 
 OBJS	= $(SRCS:.c=.o)
 
 INCLUDE	= -pthread
-FLAGS = -g -fsanitize=thread
-
-HEADER	= ./include/philo.h
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(INCLUDE) $(CFLAGS) $(FLAGS) -o $(NAME) $(OBJS)
+	$(CC) $(INCLUDE) $(CFLAGS) -o $(NAME) $(OBJS)
 	@ echo "\033[31mPhilo created\033[0m"
 
 clean:

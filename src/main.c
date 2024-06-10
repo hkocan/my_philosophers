@@ -10,21 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 #include <stdlib.h>
 
 int	main(int ac, char **av)
 {
 	t_table	*table;
 
+	if (check_args(ac, av))
+		return (error_message(ARG_ERROR), 1);
 	table = malloc(sizeof(t_table));
 	if (!table)
 		return (error_message(MEM_ERROR), 1);
 	table->philo = malloc(sizeof(t_philo));
 	if (!table->philo)
 		return (free(table), error_message(MEM_ERROR), 1);
-	if (check_args(ac, av))
-		return (free_table(table), error_message(ARG_ERROR), 1);
 	else if (setup_simulation(table, av))
 		return (free_table(table), 1);
 	else if (start_simulation(table))

@@ -53,6 +53,7 @@ typedef struct s_philo
 	int				eating_count;
 	time_t			last_eat;
 	pthread_t		thread;
+	pthread_mutex_t last_eat_mutex;
 	struct s_table	*table;
 }	t_philo;
 
@@ -92,4 +93,7 @@ void	free_table(t_table *table);
 
 // ----- SETUP SIMULATION ----- //
 int		setup_simulation(t_table *table, char **av);
+
+// ----- CONTROL ----- //
+bool		control_dead(t_table *table);
 #endif

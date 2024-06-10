@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 21:14:26 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/09 22:44:56 by hatice           ###   ########.fr       */
+/*   Updated: 2024/06/10 16:35:50 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 #include <stdio.h>
 #include <unistd.h>
 
@@ -31,7 +31,7 @@ int	print_action(t_table *table, t_philo *philo, char *str)
 
 int	eat_spaghetti(t_table *table, t_philo *philo)
 {
-	if (table->dead == true)
+	if (control_dead(table) == true)
 		return (0);
 	if (philo->id - 1 < (philo->id % table->num_philo))
 	{
@@ -49,7 +49,9 @@ int	eat_spaghetti(t_table *table, t_philo *philo)
 	}
 	print_action(table, philo, EAT);
 	wait_sleep(table, table->time_to_eat);
+	pthread_mutex_lock(&philo->last_eat_mutex);
 	philo->last_eat = get_time();
+	pthread_mutex_unlock(&philo->last_eat_mutex);
 	philo->eating_count++;
 	pthread_mutex_unlock(&table->forks[philo->id - 1]);
 	pthread_mutex_unlock(&table->forks[philo->id % table->num_philo]);

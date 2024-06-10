@@ -3,7 +3,7 @@
 
 //last eat time
 //deadlock //eat_spaghetti
-
+//./philo 2 200 40 70
 
 
 

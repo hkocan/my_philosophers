@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 16:00:48 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/09 20:59:00 by hatice           ###   ########.fr       */
+/*   Updated: 2024/06/10 13:00:29 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 #include <stdlib.h>
 
 static void	free_forks(t_table *table)
@@ -24,10 +24,8 @@ static void	free_forks(t_table *table)
 			pthread_mutex_destroy(&table->forks[i]);
 		i++;
 	}
-	if (&table->print)
-		pthread_mutex_destroy(&table->print);
-	if (&table->is_anyone_dead)
-		pthread_mutex_destroy(&table->is_anyone_dead);
+	pthread_mutex_destroy(&table->print);
+	pthread_mutex_destroy(&table->is_anyone_dead);
 }
 
 void	free_table(t_table *table)

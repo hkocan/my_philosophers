@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:58:19 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/09 21:41:58 by hatice           ###   ########.fr       */
+/*   Updated: 2024/06/10 16:49:56 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo.h"
+#include "philo.h"
 #include <stdio.h>
 #include <sys/time.h>
 #include <unistd.h>
@@ -25,12 +25,16 @@ time_t	get_time(void)
 
 void	wait_sleep(t_table *table, time_t time)
 {
+	time_t			last_eat;
 	time_t	start;
 
 	start = get_time();
-	while (table->dead == false)
+	pthread_mutex_lock(&table->philo->last_eat_mutex);
+	last_eat = table->philo->last_eat;
+	pthread_mutex_unlock(&table->philo->last_eat_mutex);
+	while (control_dead(table) == false)
 	{
-		if (start - table->philo->last_eat >= table->time_to_die)
+		if (start - last_eat >= table->time_to_die)
 		{
 			check_dead(table, table->philo);
 			break ;
@@ -40,7 +44,7 @@ void	wait_sleep(t_table *table, time_t time)
 		else
 			usleep(50);
 	}
-	if (table->dead == true)
+	if (control_dead(table) == true)
 		return ;
 }
 
