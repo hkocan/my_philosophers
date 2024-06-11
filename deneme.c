@@ -1,11 +1,9 @@
 #include <pthread.h>
 #include <stdio.h>
 
-//last eat time
-//deadlock //eat_spaghetti
+// deadlock
 //./philo 2 200 40 70
-
-
+// tek philo 5. arguman verince sonsuz bekleme
 
 // Paylaşılan kaynak
 int				counter = 0;

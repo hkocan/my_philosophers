@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:58:19 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/10 16:49:56 by hkocan           ###   ########.fr       */
+/*   Updated: 2024/06/12 01:42:06 by hatice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,20 @@ time_t	get_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-void	wait_sleep(t_table *table, time_t time)
+void	wait(t_table *table, time_t time)
 {
-	time_t			last_eat;
 	time_t	start;
 
 	start = get_time();
-	pthread_mutex_lock(&table->philo->last_eat_mutex);
-	last_eat = table->philo->last_eat;
-	pthread_mutex_unlock(&table->philo->last_eat_mutex);
 	while (control_dead(table) == false)
 	{
-		if (start - last_eat >= table->time_to_die)
-		{
+		if (get_time() - mutex_last_eat(table->philo, 0) > table->time_to_die)
 			check_dead(table, table->philo);
-			break ;
-		}
 		if (get_time() - start >= time)
 			break ;
 		else
 			usleep(50);
 	}
-	if (control_dead(table) == true)
-		return ;
 }
 
 void	error_message(char *str)
@@ -60,6 +51,8 @@ int	check_args(int ac, char **av)
 
 	i = 1;
 	if (!(ac == 5 || ac == 6))
+		return (1);
+	if (ft_atoi(av[1]) <= 0)
 		return (1);
 	while (av[i])
 	{

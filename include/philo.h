@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+  	      +:+     */
-/*   By: hatice <hatice@student.42.fr>              +#+  +:+	   +#+        */
-/*                                                +#+#+#+#+#+	+#+           */
-/*   Created: 2024/06/03 21:46:15 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/03 21:46:15 by hatice           ###   ########.fr       */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/12 01:38:11 by hatice            #+#    #+#             */
+/*   Updated: 2024/06/12 01:38:11 by hatice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,6 @@
 # define RESET "\033[0m"
 # define RED "\033[0;31m"
 
-/*# define YELLOW "\033[0;33m"
-# define GREEN "\033[0;32m"
-# define BLUE "\033[0;34m"
-# define MAGENTA "\033[0;35m"
-# define CYAN "\033[0;36m"
-# define BOLD_RED "\033[1;31m"
-# define BOLD_BLUE "\033[1;34m"
-# define BOLD_MAGENTA "\033[1;35m"
-# define BOLD_CYAN "\033[1;36m"*/
-
 // ----- ERROR MESSAGES ----- //
 # define MEM_ERROR "Error: Memory allocation failed!!!\n"
 # define ARG_ERROR "Error: Wrong arguments!!!\n"
@@ -53,7 +43,8 @@ typedef struct s_philo
 	int				eating_count;
 	time_t			last_eat;
 	pthread_t		thread;
-	pthread_mutex_t last_eat_mutex;
+	pthread_mutex_t	eat_mutex;
+	pthread_mutex_t	enought_eat;
 	struct s_table	*table;
 }	t_philo;
 
@@ -74,7 +65,7 @@ typedef struct s_table
 
 // ----- UTILS ----- //
 time_t	get_time(void);
-void	wait_sleep(t_table *table, time_t time);
+void	wait(t_table *table, time_t time);
 void	error_message(char *str);
 int		check_args(int ac, char **av);
 int		ft_atoi(const char *str);
@@ -95,5 +86,7 @@ void	free_table(t_table *table);
 int		setup_simulation(t_table *table, char **av);
 
 // ----- CONTROL ----- //
-bool		control_dead(t_table *table);
+bool	control_dead(t_table *table);
+int		eat_count(t_philo *philo, int i);
+time_t	mutex_last_eat(t_philo *philo, int i);
 #endif
