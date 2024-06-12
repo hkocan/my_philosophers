@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   setup_simulation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 14:38:15 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/12 01:41:12 by hatice           ###   ########.fr       */
+/*   Updated: 2024/06/12 16:15:28 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdlib.h>
+#include <string.h>
 
 static int	set_philo(t_table *table)
 {
@@ -38,6 +39,7 @@ static int	init_table(char **av, t_table *table)
 	table->time_to_eat = ft_atoi(av[3]);
 	table->time_to_sleep = ft_atoi(av[4]);
 	table->dead = false;
+	table->run_control = false;
 	if (table->num_philo < 1 || table->time_to_die < 0 || table->time_to_eat < 0
 		|| table->time_to_sleep < 0)
 		return (1);
@@ -56,10 +58,13 @@ static int	init_mutex(t_table *table)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	table->philo = malloc(sizeof(t_philo) * table->num_philo);
 	if (!table->philo)
 		return (error_message(MEM_ERROR), 1);
+	while (++i < table->num_philo)
+		memset(&table->philo[i], 0, sizeof(t_philo));
+	i = 0;
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_philo);
 	if (!table->forks)
 		return (error_message(MEM_ERROR), 1);
@@ -71,6 +76,8 @@ static int	init_mutex(t_table *table)
 			return (error_message(MUTEX_ERROR), 1);
 		i++;
 	}
+	if(pthread_mutex_init(&table->run_simulation, NULL))
+		return (error_message(MUTEX_ERROR), 1);//
 	if (pthread_mutex_init(&table->print, NULL))
 		return (error_message(MUTEX_ERROR), 1);
 	if (pthread_mutex_init(&table->is_anyone_dead, NULL))

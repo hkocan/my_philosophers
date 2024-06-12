@@ -15,6 +15,7 @@
 
 # include <pthread.h>
 # include <stdbool.h>
+# include <stdio.h>
 
 // ----- ACTIONS ----- //
 # define TAKE_FORK "has taken a fork"
@@ -53,6 +54,7 @@ typedef struct s_table
 	int				num_philo;
 	int				eating_count;
 	bool			dead;
+	bool			run_control;
 	time_t			time_to_die;
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
@@ -61,14 +63,15 @@ typedef struct s_table
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
 	pthread_mutex_t	is_anyone_dead;
+	pthread_mutex_t run_simulation;
 }	t_table;
 
 // ----- UTILS ----- //
 time_t	get_time(void);
-void	wait(t_table *table, time_t time);
+int	waiting_time(t_table *table, time_t time);
 void	error_message(char *str);
 int		check_args(int ac, char **av);
-int		ft_atoi(const char *str);
+long		ft_atoi(const char *str);
 
 // ----- ACTION ----- //
 int		eat_spaghetti(t_table *table, t_philo *philo);

@@ -1,7 +1,7 @@
 NAME		= philo
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g -I ./include -fsanitize=thread
+CFLAGS		= -Wall -Wextra -Werror -g -I ./include 
 SRCS_PATH	=./src
 
 RM		=rm -rf
