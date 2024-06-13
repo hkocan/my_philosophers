@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_simulation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 14:38:15 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/12 16:15:28 by hkocan           ###   ########.fr       */
+/*   Updated: 2024/06/13 09:06:24 by hatice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ static int	init_mutex(t_table *table)
 			return (error_message(MUTEX_ERROR), 1);
 		i++;
 	}
-	if(pthread_mutex_init(&table->run_simulation, NULL))
-		return (error_message(MUTEX_ERROR), 1);//
+	if (pthread_mutex_init(&table->run_simulation, NULL))
+		return (error_message(MUTEX_ERROR), 1);
 	if (pthread_mutex_init(&table->print, NULL))
 		return (error_message(MUTEX_ERROR), 1);
 	if (pthread_mutex_init(&table->is_anyone_dead, NULL))

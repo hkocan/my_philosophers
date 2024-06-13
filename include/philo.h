@@ -53,8 +53,9 @@ typedef struct s_table
 {
 	int				num_philo;
 	int				eating_count;
-	bool			dead;
+	int				run_count;
 	bool			run_control;
+	bool			dead;
 	time_t			time_to_die;
 	time_t			time_to_eat;
 	time_t			time_to_sleep;

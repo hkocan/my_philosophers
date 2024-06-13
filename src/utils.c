@@ -3,43 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hatice <hatice@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:58:19 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/12 14:45:56 by hkocan           ###   ########.fr       */
+/*   Updated: 2024/06/13 09:11:20 by hatice           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdio.h>
-#include <sys/time.h>
-#include <unistd.h>
 
-time_t	get_time(void)
+int	check_dead(t_table *table, t_philo *philo)
 {
-	struct timeval	time;
+	time_t	last_eat;
 
-	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
-}
-
-int	waiting_time(t_table *table, time_t time)
-{
-	time_t	start;
-	time_t last_eat;
-
-	start = get_time();
-	while (control_dead(table) == false)
+	if (control_dead(table) == true)
+		return (0);
+	if (table->eating_count != -1 && eat_count(philo, 0) == table->eating_count)
+		return (0);
+	pthread_mutex_lock(&table->is_anyone_dead);
+	last_eat = mutex_last_eat(philo, 0);
+	if (get_time() - last_eat > table->time_to_die && table->dead == false)
 	{
-		last_eat = mutex_last_eat(table->philo, 0);
-		if (get_time() - last_eat > table->time_to_die)
-			if (check_dead(table, table->philo) == 0)
-				return (2);
-		if (get_time() - start >= time)
-			return (0);
-		else
-			usleep(50);
+		pthread_mutex_lock(&table->print);
+		table->dead = true;
+		printf("\033[0;31m%ld %d %s\n", get_time() - table->first_time,
+			philo->id, DIE);
+		pthread_mutex_unlock(&table->print);
+		pthread_mutex_unlock(&table->is_anyone_dead);
+		return (0);
 	}
+	pthread_mutex_unlock(&table->is_anyone_dead);
 	return (1);
 }
 
@@ -47,6 +41,7 @@ void	error_message(char *str)
 {
 	printf("%s%s%s", RED, str, RESET);
 }
+
 static int	number_digit(char *str)
 {
 	int	i;
@@ -76,23 +71,23 @@ static int	number_digit(char *str)
 
 int	check_args(int ac, char **av)
 {
-	int	i;
-	long num;
+	int		i;
+	long	num;
 
 	i = 1;
 	if (!(ac == 5 || ac == 6))
 		return (1);
-	while(av[i])
-	{
-		num=ft_atoi(av[i]);
-		if(num > 2147483647 || num < 0)
-			return(1);
-		i++;
-	}
-	i=1;
 	while (av[i])
 	{
-		if(number_digit(av[i]) == 0)
+		num = ft_atoi(av[i]);
+		if (num > 2147483647 || num < 0)
+			return (1);
+		i++;
+	}
+	i = 1;
+	while (av[i])
+	{
+		if (number_digit(av[i]) == 0)
 			return (1);
 		i++;
 	}
