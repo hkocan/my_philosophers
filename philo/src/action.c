@@ -6,20 +6,21 @@
 /*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 21:14:26 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/13 19:19:35 by hkocan           ###   ########.fr       */
+/*   Updated: 2024/06/13 21:17:33 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <unistd.h>
 #include <stdio.h>
 #include <sys/time.h>
-#include <unistd.h>
 
 time_t	get_time(void)
 {
 	struct timeval	time;
 
-	gettimeofday(&time, NULL);
+	if (gettimeofday(&time, NULL))
+		return (error_message(TIME_ERROR), 0);
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 

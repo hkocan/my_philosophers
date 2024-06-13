@@ -6,12 +6,11 @@
 /*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/10 16:13:49 by hkocan            #+#    #+#             */
-/*   Updated: 2024/06/12 11:41:49 by hkocan           ###   ########.fr       */
+/*   Updated: 2024/06/13 20:09:58 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdio.h>
 
 bool	control_dead(t_table *table)
 {

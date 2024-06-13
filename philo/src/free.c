@@ -6,12 +6,11 @@
 /*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/08 16:00:48 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/13 19:14:17 by hkocan           ###   ########.fr       */
+/*   Updated: 2024/06/13 20:11:26 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <pthread.h>
 #include <stdlib.h>
 
 void	clean(t_table *table, int i, int control)

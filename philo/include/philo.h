@@ -15,7 +15,6 @@
 
 # include <pthread.h>
 # include <stdbool.h>
-# include <stdio.h>
 
 // ----- ACTIONS ----- //
 # define TAKE_FORK "has taken a fork"
@@ -37,6 +36,7 @@
 # define TABLE_ERROR "Error: Table initialization failed!!!\n"
 # define PHILO_ERROR "Error: Philo initialization failed!!!\n"
 # define SIMULATION_ERROR "Error: Simulation failed!!!\n"
+# define TIME_ERROR "Error: Gettimeofday failed!!!\n"
 
 typedef struct s_philo
 {
@@ -64,7 +64,7 @@ typedef struct s_table
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
 	pthread_mutex_t	is_anyone_dead;
-	pthread_mutex_t run_simulation;
+	pthread_mutex_t	run_simulation;
 }	t_table;
 
 // ----- UTILS ----- //
@@ -72,7 +72,7 @@ time_t	get_time(void);
 int		waiting_time(t_table *table, time_t time);
 void	error_message(char *str);
 int		check_args(int ac, char **av);
-long		ft_atoi(const char *str);
+long	ft_atoi(const char *str);
 
 // ----- ACTION ----- //
 int		eat_spaghetti(t_table *table, t_philo *philo);

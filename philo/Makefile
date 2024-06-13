@@ -1,7 +1,7 @@
 NAME		= philo
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g -I ./include #-fsanitize=thread
+CFLAGS		= -Wall -Wextra -Werror -g -I ./include
 SRCS_PATH	=./src
 
 RM		=rm -rf
@@ -22,7 +22,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(INCLUDE) $(CFLAGS) -o $(NAME) $(OBJS)
-	@ echo "\033[31mPhilo created\033[0m"
+	@ echo "\033[33mPhilo created\033[0m"
 
 clean:
 	@ rm -f $(OBJS)
@@ -35,6 +35,3 @@ fclean: clean
 re: fclean all
 
 .PHONY:	all clean fclean re
-
-
-

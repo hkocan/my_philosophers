@@ -6,13 +6,13 @@
 /*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 14:38:15 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/13 18:22:59 by hkocan           ###   ########.fr       */
+/*   Updated: 2024/06/13 20:12:26 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 
 static int	set_philo(t_table *table)
 {
@@ -32,14 +32,15 @@ static int	set_philo(t_table *table)
 
 static int	init_table(char **av, t_table *table)
 {
+	memset(table, 0, sizeof(t_table));
 	table->num_philo = ft_atoi(av[1]);
 	table->time_to_die = ft_atoi(av[2]);
 	table->time_to_eat = ft_atoi(av[3]);
 	table->time_to_sleep = ft_atoi(av[4]);
 	table->dead = false;
 	table->run_control = false;
-	if (table->num_philo < 1 || table->time_to_die < 0 || table->time_to_eat < 0
-		|| table->time_to_sleep < 0)
+	if (table->num_philo < 1 || table->time_to_die < 0
+		|| table->time_to_eat < 0 || table->time_to_sleep < 0)
 		return (1);
 	if (av[5])
 	{

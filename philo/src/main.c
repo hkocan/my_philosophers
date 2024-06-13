@@ -15,8 +15,7 @@
 
 int	main(int ac, char **av)
 {
-	int i;
-	i=0;
+	int		i;
 	t_table	*table;
 
 	if (check_args(ac, av))
@@ -28,6 +27,7 @@ int	main(int ac, char **av)
 		return (free_table(table, 0), 1);
 	if (start_simulation(table))
 	{
+		i = 0;
 		while (i < table->run_count)
 			if (pthread_join(table->philo[i++].thread, NULL))
 				break ;

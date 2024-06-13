@@ -6,14 +6,11 @@
 /*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 23:20:35 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/13 19:24:35 by hkocan           ###   ########.fr       */
+/*   Updated: 2024/06/13 20:10:22 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdio.h>
-#include <stdio.h> //
-#include <unistd.h>
 
 static void	one_philo(t_table *table, t_philo *philo)
 {
@@ -86,9 +83,7 @@ int	start_simulation(t_table *table)
 	{
 		table->run_control = false;
 		if (pthread_create(&philo[i].thread, NULL, &philo_life, &philo[i]))
-		{
 			return (pthread_mutex_unlock(&table->run_simulation), 1);
-		}
 		table->run_count ++;
 		i++;
 	}
