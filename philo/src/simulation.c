@@ -6,7 +6,7 @@
 /*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 23:20:35 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/13 20:10:22 by hkocan           ###   ########.fr       */
+/*   Updated: 2024/06/13 22:27:31 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	one_philo(t_table *table, t_philo *philo)
 		return ;
 }
 
-void	*numerous_philo(t_table *table, t_philo *philo)
+static	void	*numerous_philo(t_table *table, t_philo *philo)
 {
 	int	right_fork;
 	int	left_fork;
@@ -46,7 +46,7 @@ void	*numerous_philo(t_table *table, t_philo *philo)
 	return (NULL);
 }
 
-void	*philo_life(void *arg)
+static	void	*philo_life(void *arg)
 {
 	t_table	*table;
 	t_philo	*philo;

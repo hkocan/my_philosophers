@@ -6,7 +6,7 @@
 /*   By: hkocan <hkocan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 16:58:19 by hatice            #+#    #+#             */
-/*   Updated: 2024/06/13 20:13:31 by hkocan           ###   ########.fr       */
+/*   Updated: 2024/06/13 21:57:28 by hkocan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	check_args(int ac, char **av)
 	while (av[i])
 	{
 		num = ft_atoi(av[i]);
-		if (num > 2147483647 || num < 0)
+		if (num > 2147483647 || num <= 0)
 			return (1);
 		i++;
 	}
